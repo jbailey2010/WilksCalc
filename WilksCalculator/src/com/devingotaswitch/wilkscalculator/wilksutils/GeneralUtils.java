@@ -13,4 +13,16 @@ public class GeneralUtils
 	    }
 	    return true;
 	}
+	
+	/**
+	 * Makse sure a string is an int
+	 */
+	public static boolean isInteger(String s){
+		try { 
+	        Integer.parseInt(s); 
+	    } catch(NumberFormatException e) { 
+	        return false; 
+	    }
+	    return true;
+	}
 }
