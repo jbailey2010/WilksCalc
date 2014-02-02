@@ -25,4 +25,20 @@ public class GeneralUtils
 	    }
 	    return true;
 	}
+	
+	/**
+	 * Converts pounds to kilograms
+	 */
+	public static double lbToKg(double pound)
+	{
+		return pound / 2.2;
+	}
+	
+	/**
+	 * Converts kilograms to pounds
+	 */
+	public static double kgToLb(double kg)
+	{
+		return kg * 2.2;
+	}
 }

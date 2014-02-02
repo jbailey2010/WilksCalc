@@ -39,6 +39,21 @@ public class UserStats
 	}
 	
 	/**
+	 * A pseudo dummy constructor to be read to if data exists
+	 */
+	public UserStats(Context c)
+	{
+		cont = c;
+		isMan = false;
+		isKG = false;
+		weight = 0.0;
+		deadlift = 0.0;
+		squat = 0.0;
+		bench = 0.0;
+		total = 0.0;
+	}
+	
+	/**
 	 * Checks to see if everything is saved as a flag to know if needed to read from file or not
 	 */
 	public static boolean isSaved(Context cont)
@@ -190,25 +205,31 @@ public class UserStats
 		double f = 0;
 		if(isMan)
 		{
-			a = -216.0475144;
-			b = 16.2606339;
-			c = -0.002388645;
-			d = -0.00113732;
-			e = 0.00000701863;
-			f = 0.00000001291;
+			a=-216.0475144;
+			b=16.2606339;
+			c=-0.002388645;
+			d=-0.00113732;
+			e=7.01863E-06;
+			f=-1.291E-08;
 		}
 		else
 		{
-			a = 594.31747775582;
-			b = -27.23842536557;
-			c = 0.82112226871;
-			d = -0.00930733913;
-			e = 0.00004731582;
-			f = -0.00000009054;
+			a=594.31747775582;
+			b=-27.23842536447;
+			c=0.82112226871;
+			d=-0.00930733913;
+			e=0.00004731582;
+			f=-0.00000009054;
 		}
 		double x = weight;
-		double denom = a + b*x + c*Math.pow(x,2.0) + d*Math.pow(x,3) + e*Math.pow(x,4) + f*Math.pow(x,5);
-		wilks = total * (500.0 / denom);
+		double totNormalized = total;
+		if(!isKG)
+		{
+			x = GeneralUtils.lbToKg(x);
+			totNormalized = GeneralUtils.lbToKg(total);
+		}
+		double denom = a + b*x + c*Math.pow(x,2.0) + d*Math.pow(x,3.0) + e*Math.pow(x,4.0) + f*Math.pow(x,5.0);
+		wilks = totNormalized * (500.0 / denom);
 		return wilks;
 	}
 

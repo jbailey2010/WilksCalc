@@ -11,6 +11,7 @@
         android:layout_height="0dip"
         android:layout_width="match_parent"
 	    android:weightSum="100"
+	    android:gravity="center_horizontal|center_vertical"
 	    android:layout_weight="20"
         android:orientation="horizontal">
 	    <RadioGroup
@@ -68,7 +69,7 @@
 	    <EditText
 	        android:id="@+id/weight_view"
 	        android:layout_width="0dip"
-	        android:layout_height="wrap_content"
+	        android:layout_height="42dp"
 	        android:layout_weight="50"
 	        android:layout_marginRight="10dp"
 	        android:inputType="number"
@@ -79,7 +80,7 @@
 	        android:layout_width="0dip"
 	        android:layout_weight="50"
 	        android:inputType="number"
-	        android:layout_height="wrap_content"
+	        android:layout_height="42dp"
 	        android:background="@drawable/dropdown_background"
 	        android:hint="Deadlift Max"/>
     </LinearLayout>
@@ -96,7 +97,7 @@
 	    <EditText
 	        android:id="@+id/squat_view"
 	        android:layout_width="0dip"
-	        android:layout_height="wrap_content"
+	        android:layout_height="42dp"
 	        android:layout_weight="50"
 	        android:layout_marginRight="10dp"
 	        android:inputType="number"
@@ -107,7 +108,7 @@
 	        android:layout_width="0dip"
 	        android:layout_weight="50"
 	        android:inputType="number"
-	        android:layout_height="wrap_content"
+	        android:layout_height="42dp"
 	        android:background="@drawable/dropdown_background"
 	        android:hint="Bench Max"/>
     </LinearLayout>
@@ -163,6 +164,8 @@
          	    android:text=" "
          	    android:layout_centerHorizontal="true"
          	    android:layout_centerVertical="true"
+         	    android:textStyle="bold"
+         	    android:textSize="30sp"
          	    android:layout_height="wrap_content"
          	    android:layout_width="wrap_content"
          	    />
