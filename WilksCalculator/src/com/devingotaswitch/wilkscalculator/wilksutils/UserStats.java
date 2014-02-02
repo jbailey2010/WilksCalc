@@ -185,9 +185,9 @@ public class UserStats
 	 */
 	public void isPR(double old, double newLift, String key)
 	{
-		if(newLift > old)
+		if(newLift > old && old > 0)
 		{
-			Toast.makeText(cont, "Congrats on the " + key + " PR!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(cont, "Congrats on the " + key + " PR!", Toast.LENGTH_LONG).show();
 		}
 	}
 	

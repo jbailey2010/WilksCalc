@@ -1,22 +1,29 @@
 package com.devingotaswitch.wilkscalculator;
 
 
+import java.text.DecimalFormat;
+
+
 import com.devingotaswitch.wilkscalculator.wilksutils.GeneralUtils;
 import com.devingotaswitch.wilkscalculator.wilksutils.UserStats;
 
 import android.os.Bundle;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class WilksCalculator extends Activity {
 	public Context cont;
@@ -101,14 +108,17 @@ public class WilksCalculator extends Activity {
 			imm.hideSoftInputFromWindow(squat_view.getWindowToken(), 0);
 			imm.hideSoftInputFromWindow(bench_view.getWindowToken(), 0);
 		TextView output = (TextView)findViewById(R.id.output_view);
+		DecimalFormat df = new DecimalFormat("#.####");
 		if(!stats.isKG)
 		{
-			output.setText("Big 3 Total: " + stats.total + "\nWilks Score: " + stats.wilksScore);
+			output.setText("Big 3 Total: " + df.format(stats.total)
+					+ "\nWilks Score: " + df.format(stats.wilksScore));
 		}
 		else
 		{
-			output.setText("Big 3 Total: " + GeneralUtils.lbToKg(stats.total)+ "\nWilks Score: " +  
-					stats.wilksScore);
+			output.setText("Big 3 Total: " + 
+					df.format(GeneralUtils.lbToKg(stats.total))+ "\nWilks Score: " +  
+					df.format(stats.wilksScore));
 		}
 			setButtonsOnClick(male, female, pounds, kgs, weight, deadlift_view, squat_view, bench_view);
 	}
@@ -157,8 +167,7 @@ public class WilksCalculator extends Activity {
 		clear.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				stats.clearData();
-				fillDataEmpty();
+				handleClear();
 			}
 		});
 		submit.setOnClickListener(new OnClickListener(){
@@ -184,11 +193,46 @@ public class WilksCalculator extends Activity {
 					double dead = Double.parseDouble(deadlift_view.getText().toString());
 					double squat = Double.parseDouble(squat_view.getText().toString());
 					double bench = Double.parseDouble(bench_view.getText().toString());
-					stats = new UserStats(isMale, !isPounds, weight, dead, squat, bench, cont);
+					//stats = new UserStats(isMale, !isPounds, weight, dead, squat, bench, cont);
+					stats.updateStats(!isPounds, isMale, weight, squat, dead, bench);
 					fillDataStored();
+				}
+				else
+				{
+					Toast.makeText(cont, "Invalid input, please type numbers in every field", Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
 	}
 	
+	/**
+	 * Handles the confirmation/canceling of clearing
+	 */
+	public void handleClear()
+	{
+		final Dialog dialog = new Dialog(cont, R.style.RoundCornersFull);
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dialog.setContentView(R.layout.clear_popup);
+		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+	    lp.copyFrom(dialog.getWindow().getAttributes());
+	    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+	    dialog.getWindow().setAttributes(lp);
+		dialog.show();
+		Button cancel = (Button)dialog.findViewById(R.id.clear_cancel);
+		cancel.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+		});
+		Button confirm = (Button)dialog.findViewById(R.id.clear_confirm);
+		confirm.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+				stats.clearData();
+				fillDataEmpty();
+			}
+		});
+	}
 }
