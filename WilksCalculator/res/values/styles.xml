@@ -11,6 +11,13 @@
             backward-compatibility can go here.
         -->
     </style>
+    
+     <style name="RoundCornersFull" parent="android:Theme.Holo.Light.Dialog">
+        <item name="android:windowBackground">@drawable/dialog_background</item>
+        <item name="android:textColorPrimary">#EEEEEE</item>
+	    <item name="android:textColorSecondary">#EEEEEE</item>
+	    <item name="android:textColorTertiary">#EEEEEE</item>
+    </style> 
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
