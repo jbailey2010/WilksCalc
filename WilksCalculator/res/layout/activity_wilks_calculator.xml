@@ -1,8 +1,12 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+<LinearLayout 
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="130"
+    android:weightSum="150"
     android:orientation="vertical"
     tools:context=".WilksCalculator" >
 
@@ -57,32 +61,60 @@
 	    </RadioGroup>
     </LinearLayout>
     <LinearLayout
-        android:layout_below="@+id/gender_weight_group"
         android:id="@+id/weight_dl_group"
         android:layout_height="0dip"
         android:layout_width="match_parent"
         android:layout_marginTop="15dp"
         android:padding="10dp"
-        android:layout_weight="20"
+        android:layout_weight="30"
+        android:baselineAligned="false"
 	    android:weightSum="100"
         android:orientation="horizontal">
-	    <EditText
-	        android:id="@+id/weight_view"
-	        android:layout_width="0dip"
-	        android:layout_height="42dp"
+	    <LinearLayout
+	        android:layout_height="match_parent"
+	        android:weightSum="100"
 	        android:layout_weight="50"
-	        android:layout_marginRight="10dp"
-	        android:inputType="numberDecimal"
-	        android:background="@drawable/dropdown_background"
-	        android:hint="Weight"/>
-	     <EditText
-	        android:id="@+id/deadlift_view"
 	        android:layout_width="0dip"
+	        android:orientation="vertical"
+	        >
+	        <TextView
+	            android:id="@+id/weight_title"
+	            android:layout_width="match_parent"
+	            android:layout_height="0dip"
+	            android:layout_weight="50"
+	            android:text="Weight"/>
+		    <EditText
+		        android:id="@+id/weight_view"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dip"
+		        android:layout_weight="50"
+		        android:layout_marginRight="10dp"
+		        android:inputType="numberDecimal"
+		        android:background="@drawable/dropdown_background"
+		        android:hint="Weight"/>
+	    </LinearLayout>
+	    <LinearLayout
+	        android:layout_height="match_parent"
+	        android:weightSum="100"
 	        android:layout_weight="50"
-	        android:inputType="numberDecimal"
-	        android:layout_height="42dp"
-	        android:background="@drawable/dropdown_background"
-	        android:hint="Deadlift Max"/>
+	        android:layout_width="0dip"
+	        android:orientation="vertical"
+	        >
+	        <TextView
+	            android:id="@+id/dl_title"
+	            android:layout_width="match_parent"
+	            android:layout_height="0dip"
+	            android:layout_weight="50"
+	            android:text="Deadlift"/>
+		     <EditText
+		        android:id="@+id/deadlift_view"
+		        android:layout_width="match_parent"
+		        android:layout_weight="50"
+		        android:inputType="numberDecimal"
+		        android:layout_height="0dip"
+		        android:background="@drawable/dropdown_background"
+		        android:hint="Deadlift Max"/>
+		</LinearLayout>
     </LinearLayout>
     
      <LinearLayout
@@ -90,27 +122,56 @@
         android:layout_height="0dip"
         android:layout_width="match_parent"
         android:layout_marginTop="15dp"
+        android:baselineAligned="false"
         android:padding="10dp"
-        android:layout_weight="20"
+        android:layout_weight="30"
 	    android:weightSum="100"
         android:orientation="horizontal">
-	    <EditText
-	        android:id="@+id/squat_view"
-	        android:layout_width="0dip"
-	        android:layout_height="42dp"
+	    <LinearLayout
+	        android:layout_height="match_parent"
+	        android:weightSum="100"
 	        android:layout_weight="50"
-	        android:layout_marginRight="10dp"
-	        android:inputType="numberDecimal"
-	        android:background="@drawable/dropdown_background"
-	        android:hint="Squat"/>
-	     <EditText
-	        android:id="@+id/bench_view"
 	        android:layout_width="0dip"
+	        android:orientation="vertical"
+	        >
+	        <TextView
+	            android:id="@+id/squat_title"
+	            android:layout_width="match_parent"
+	            android:layout_height="0dip"
+	            android:layout_weight="50"
+	            android:text="Squat"/>
+		    <EditText
+		        android:id="@+id/squat_view"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dip"
+		        android:layout_weight="50"
+		        android:layout_marginRight="10dp"
+		        android:inputType="numberDecimal"
+		        android:background="@drawable/dropdown_background"
+		        android:hint="Squat"/>
+		    </LinearLayout>
+		    <LinearLayout
+	        android:layout_height="match_parent"
+	        android:weightSum="100"
 	        android:layout_weight="50"
-	        android:inputType="numberDecimal"
-	        android:layout_height="42dp"
-	        android:background="@drawable/dropdown_background"
-	        android:hint="Bench Max"/>
+	        android:layout_width="0dip"
+	        android:orientation="vertical"
+	        >
+	        <TextView
+	            android:id="@+id/bench_title"
+	            android:layout_width="match_parent"
+	            android:layout_height="0dip"
+	            android:layout_weight="50"
+	            android:text="Bench"/>
+		     <EditText
+		        android:id="@+id/bench_view"
+		        android:layout_width="match_parent"
+		        android:layout_weight="50"
+		        android:inputType="numberDecimal"
+		        android:layout_height="0dip"
+		        android:background="@drawable/dropdown_background"
+		        android:hint="Bench Max"/>
+		     </LinearLayout>
     </LinearLayout>
     
      <LinearLayout
@@ -170,5 +231,14 @@
          	    android:layout_width="wrap_content"
          	    />
      </RelativeLayout>
+     
+    
 
 </LinearLayout>
+
+ <com.devspark.sidenavigation.SideNavigationView
+        android:id="@+id/side_navigation_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+ 
+ </RelativeLayout>

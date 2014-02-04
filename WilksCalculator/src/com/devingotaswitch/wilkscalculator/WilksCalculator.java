@@ -4,16 +4,25 @@ package com.devingotaswitch.wilkscalculator;
 import java.text.DecimalFormat;
 
 
+
+
+
+
+
 import com.devingotaswitch.wilkscalculator.wilksutils.GeneralUtils;
 import com.devingotaswitch.wilkscalculator.wilksutils.UserStats;
+import com.devspark.sidenavigation.ISideNavigationCallback;
+import com.devspark.sidenavigation.SideNavigationView;
 
 import android.os.Bundle;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.text.InputType;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -21,6 +30,7 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,16 +38,34 @@ import android.widget.Toast;
 public class WilksCalculator extends Activity {
 	public Context cont;
 	public UserStats stats;
+	SideNavigationView sideNavigationView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_wilks_calculator);
 		ActionBar ab = getActionBar();
 		cont = this;
-		//ab.setDisplayShowHomeEnabled(false);
 		ab.setDisplayShowTitleEnabled(false);
-		setContentView(R.layout.activity_wilks_calculator);
-		
+		ISideNavigationCallback sideNavigationCallback = new ISideNavigationCallback() {
+		    @Override
+		    public void onSideNavigationItemClick(int itemId) {
+		    	switch (itemId) {
+	            case R.id.score_classifications:
+	            	wilksPopup();
+	                break;
+	            case R.id.siff_score:
+	            	siffPopup();	
+	                break;
+	            default:
+	                return;
+		    	}
+		    }
+		};
+		sideNavigationView = (SideNavigationView) findViewById(R.id.side_navigation_view);
+	    sideNavigationView.setMenuItems(R.menu.side_navigation_menu);
+	    sideNavigationView.setMenuClickCallback(sideNavigationCallback);
+	    getActionBar().setDisplayHomeAsUpEnabled(true);
 		checkUserStats();
 
 	}
@@ -46,9 +74,78 @@ public class WilksCalculator extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.wilks_calculator, menu);
+		
 		return true;
 	}
 	
+	/**
+	 * Runs the on selection part of the menu
+	 */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) 
+	{  
+		switch (item.getItemId()) 
+		{
+			case android.R.id.home:
+				System.out.println("Pressed");
+		        sideNavigationView.toggleMenu();
+		        return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	/**
+	 * Makes the one text one image popup with the Wilks score classifications
+	 */
+	public void wilksPopup()
+	{
+		final Dialog dialog = new Dialog(cont, R.style.RoundCornersFull);
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dialog.setContentView(R.layout.text_image_popup);
+		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+	    lp.copyFrom(dialog.getWindow().getAttributes());
+	    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+	    dialog.getWindow().setAttributes(lp);
+		dialog.show();
+		TextView close = (TextView)dialog.findViewById(R.id.close);
+		close.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				dialog.dismiss();
+			}
+		});
+		TextView text = (TextView)dialog.findViewById(R.id.text_above_image);
+		ImageView image = (ImageView)dialog.findViewById(R.id.image_below_text);
+		image.setImageResource(R.drawable.wilks);
+		text.setText("Below are the wilks score experience levels, as described by Rippetoe and Kilgore");
+	}
+	
+	/**
+	 * Makes the one text one image popup with the Siff scores
+	 */
+	public void siffPopup()
+	{
+		final Dialog dialog = new Dialog(cont, R.style.RoundCornersFull);
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dialog.setContentView(R.layout.text_image_popup);
+		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+	    lp.copyFrom(dialog.getWindow().getAttributes());
+	    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+	    dialog.getWindow().setAttributes(lp);
+		dialog.show();
+		TextView close = (TextView)dialog.findViewById(R.id.close);
+		close.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				dialog.dismiss();
+			}
+		});
+		TextView text = (TextView)dialog.findViewById(R.id.text_above_image);
+		ImageView image = (ImageView)dialog.findViewById(R.id.image_below_text);
+		image.setImageResource(R.drawable.siff);
+		text.setText("Below are the Siff scores, which are roughly the percentage of the world record performance in that field");
+	}
 	
 	/**
 	 * If data is stored, read it and display, otherwise dummy stuff
