@@ -40,7 +40,7 @@ public class WilksCalculator extends Activity {
 	public UserStats stats;
 	SideNavigationView sideNavigationView;
 	
-	@Override
+	@Override 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_wilks_calculator);
@@ -87,7 +87,6 @@ public class WilksCalculator extends Activity {
 		switch (item.getItemId()) 
 		{
 			case android.R.id.home:
-				System.out.println("Pressed");
 		        sideNavigationView.toggleMenu();
 		        return true;
 			default:
@@ -205,17 +204,19 @@ public class WilksCalculator extends Activity {
 			imm.hideSoftInputFromWindow(squat_view.getWindowToken(), 0);
 			imm.hideSoftInputFromWindow(bench_view.getWindowToken(), 0);
 		TextView output = (TextView)findViewById(R.id.output_view);
-		DecimalFormat df = new DecimalFormat("#.####");
+		DecimalFormat df = new DecimalFormat("#.###");
 		if(!stats.isKG)
 		{
 			output.setText("Big 3 Total: " + df.format(stats.total)
-					+ "\nWilks Score: " + df.format(stats.wilksScore));
+					+ "\nWilks Score: " + df.format(stats.wilksScore)
+					+ "\nClassification: " + stats.getClassifs());
 		}
 		else
 		{
 			output.setText("Big 3 Total: " + 
 					df.format(GeneralUtils.lbToKg(stats.total))+ "\nWilks Score: " +  
-					df.format(stats.wilksScore));
+					df.format(stats.wilksScore)
+					+ "\nClassification: " + stats.getClassifs());
 		}
 			setButtonsOnClick(male, female, pounds, kgs, weight, deadlift_view, squat_view, bench_view);
 	}
@@ -290,7 +291,7 @@ public class WilksCalculator extends Activity {
 					double dead = Double.parseDouble(deadlift_view.getText().toString());
 					double squat = Double.parseDouble(squat_view.getText().toString());
 					double bench = Double.parseDouble(bench_view.getText().toString());
-					//stats = new UserStats(isMale, !isPounds, weight, dead, squat, bench, cont);
+					stats = new UserStats(isMale, !isPounds, weight, dead, squat, bench, cont);
 					stats.updateStats(!isPounds, isMale, weight, squat, dead, bench);
 					fillDataStored();
 				}

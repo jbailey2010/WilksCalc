@@ -1,5 +1,10 @@
 package com.devingotaswitch.wilkscalculator.wilksutils;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.PriorityQueue;
+import java.util.Set;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.widget.Toast;
@@ -20,12 +25,14 @@ public class UserStats
 	public double total;
 	public double wilksScore;
 	public Context cont;
+	public HashMap<String, String> classifications;
 	
 	/**
 	 * Takes in all of the user input measurements, uses them to calculate the wilks score, and saves the data
 	 */
 	public UserStats(boolean isM, boolean kg, double w, double dl, double s, double b, Context c)
 	{
+		classifications = new HashMap<String, String>();
 		cont = c;
 		isMan = isM;
 		isKG = kg;
@@ -35,6 +42,7 @@ public class UserStats
 		bench = b;
 		total = deadlift + squat + bench;
 		wilksScore = this.calculateWilks();
+		populateClassifs();
 		saveData();
 	}
 	
@@ -43,6 +51,7 @@ public class UserStats
 	 */
 	public UserStats(Context c)
 	{
+		classifications = new HashMap<String, String>();
 		cont = c;
 		isMan = false;
 		isKG = false;
@@ -51,6 +60,162 @@ public class UserStats
 		squat = 0.0;
 		bench = 0.0;
 		total = 0.0;
+		populateClassifs();
+	}
+	
+	public void populateClassifs()
+	{
+		classifications.put("52/116", "Un-trained");
+		classifications.put("52/193", "Novice");
+		classifications.put("52/227", "Intermediate");
+		classifications.put("52/321", "Advanced");
+		classifications.put("52/416", "Elite");
+		
+		classifications.put("56/116", "Un-trained");
+		classifications.put("56/193", "Novice");
+		classifications.put("56/230", "Intermediate");
+		classifications.put("56/320", "Advanced");
+		classifications.put("56/415", "Elite");
+		
+		classifications.put("60/117", "Un-trained");
+		classifications.put("60/195", "Novice");
+		classifications.put("60/231", "Intermediate");
+		classifications.put("60/321", "Advanced");
+		classifications.put("60/414", "Elite");
+		
+		classifications.put("67/118", "Un-trained");
+		classifications.put("67/197", "Novice");
+		classifications.put("67/236", "Intermediate");
+		classifications.put("67/326", "Advanced");
+		classifications.put("67/416", "Elite");
+		
+		classifications.put("75/119", "Un-trained");
+		classifications.put("75/198", "Novice");
+		classifications.put("75/236", "Intermediate");
+		classifications.put("75/326", "Advanced");
+		classifications.put("75/416", "Elite");
+	
+		classifications.put("82/120", "Un-trained");
+		classifications.put("82/201", "Novice");
+		classifications.put("82/239", "Intermediate");
+		classifications.put("82/329", "Advanced");
+		classifications.put("82/418", "Elite");
+	
+		classifications.put("90/121", "Un-trained");
+		classifications.put("90/201", "Novice");
+		classifications.put("90/241", "Intermediate");
+		classifications.put("90/329", "Advanced");
+		classifications.put("90/416", "Elite");
+	
+		classifications.put("100/121", "Un-trained");
+		classifications.put("100/203", "Novice");
+		classifications.put("100/243", "Intermediate");
+		classifications.put("100/330", "Advanced");
+		classifications.put("100/415", "Elite");
+	
+		classifications.put("110/123", "Un-trained");
+		classifications.put("110/204", "Novice");
+		classifications.put("110/242", "Intermediate");
+		classifications.put("110/329", "Advanced");
+		classifications.put("110/412", "Elite");
+	
+		classifications.put("125/122", "Un-trained");
+		classifications.put("125/203", "Novice");
+		classifications.put("125/241", "Intermediate");
+		classifications.put("125/326", "Advanced");
+		classifications.put("125/408", "Elite");
+	
+		classifications.put("145/121", "Un-trained");
+		classifications.put("145/202", "Novice");
+		classifications.put("145/240", "Intermediate");
+		classifications.put("145/324", "Advanced");
+		classifications.put("145/405", "Elite");
+		
+		classifications.put("145+/124", "Un-trained");
+		classifications.put("145+/206", "Novice");
+		classifications.put("145+/245", "Intermediate");
+		classifications.put("145+/330", "Advanced");
+		classifications.put("145+/413", "Elite");
+	}
+	
+	public String getClassifs()
+	{
+		double mass = weight;
+		double lifted = wilksScore;
+		if(!isKG)
+		{
+			mass = GeneralUtils.lbToKg(mass);
+		}
+		Set<String> keys = classifications.keySet();
+		String massKey = this.closestUnderWeight(mass, keys);
+		String liftedKey = this.closestUnderMass(lifted, keys, massKey);
+		return classifications.get(massKey + "/" + liftedKey);
+	}
+	
+	public String closestUnderMass(double x, Set<String> keys, String massKey)
+	{
+		String ret = "";
+		final Iterator<String> itr = keys.iterator();
+	    Object lastElement = itr.next();
+	    Object lastGood = lastElement;
+	    while(itr.hasNext()) {
+	    	if((((String) lastElement).split("/")[0]).equals("massKey"))
+	    	{
+	    		lastGood = lastElement;
+	    	}
+	        lastElement=itr.next();
+	    }
+	    Integer lastValidWilks = Integer.parseInt(((String)lastGood).split("/")[1]);
+	    double currBest = 1000000000;
+	    
+		for(String keyComb : keys)
+		{
+			String[] keySet = keyComb.split("/");
+			if(keySet[0].equals(massKey))
+			{
+				String wilksIter = keySet[1];
+			    Integer wilksCurrent = Integer.parseInt(wilksIter);
+			    if(Math.abs(wilksCurrent - x) < currBest)
+			    {
+			    	ret = String.valueOf(wilksCurrent);
+			    	currBest = Math.abs(wilksCurrent - x);
+			    }
+			}
+		}
+		if(ret.equals(""))
+		{
+			return String.valueOf(lastValidWilks);
+		}
+		return ret;
+	}
+	
+	public String closestUnderWeight(double x, Set<String> keys)
+	{
+		String ret = "";
+		double currBest = 1000000000;
+		for(String iter : keys)
+		{
+			String[] set = iter.split("/");
+			if(iter.contains("+"))
+			{
+				Integer ceil = Integer.parseInt(set[0].substring(0, set[0].length() - 1));
+				if(ceil < x)
+				{
+					return set[0];
+				}
+				else
+				{
+					continue;
+				}
+			}
+			Integer currMass = Integer.parseInt(set[0]);
+			if(Math.abs(x - currMass) < currBest)
+			{
+				currBest = Math.abs(x - currMass);
+				ret = String.valueOf(currMass);
+			}
+		}
+		return ret;
 	}
 	
 	/**
