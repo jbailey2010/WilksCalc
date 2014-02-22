@@ -292,7 +292,7 @@ public class WilksCalculator extends Activity {
 					double squat = Double.parseDouble(squat_view.getText().toString());
 					double bench = Double.parseDouble(bench_view.getText().toString());
 					stats = new UserStats(isMale, !isPounds, weight, dead, squat, bench, cont);
-					stats.updateStats(!isPounds, isMale, weight, squat, dead, bench);
+					stats.updateStats(!isPounds, isMale, Math.abs(weight), Math.abs(squat), Math.abs(dead), Math.abs(bench));
 					fillDataStored();
 				}
 				else

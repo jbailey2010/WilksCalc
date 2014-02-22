@@ -149,6 +149,7 @@ public class UserStats
 		Set<String> keys = classifications.keySet();
 		String massKey = this.closestUnderWeight(mass, keys);
 		String liftedKey = this.closestUnderMass(lifted, keys, massKey);
+		System.out.println(liftedKey);
 		return classifications.get(massKey + "/" + liftedKey);
 	}
 	
@@ -157,17 +158,25 @@ public class UserStats
 		String ret = "";
 		final Iterator<String> itr = keys.iterator();
 	    Object lastElement = itr.next();
+	    int firstGood = 10000000;
 	    Object lastGood = lastElement;
 	    while(itr.hasNext()) {
-	    	if((((String) lastElement).split("/")[0]).equals("massKey"))
+	    	if((((String) lastElement).split("/")[0]).equals(massKey) && Integer.parseInt((((String) lastElement).split("/")[1])) > 
+	    		Integer.parseInt(((String) lastGood).split("/")[1]))
 	    	{
 	    		lastGood = lastElement;
+	    	}
+	    	if((((String) lastElement).split("/")[0]).equals(massKey) && Integer.parseInt((((String) lastElement).split("/")[1])) < 
+    			firstGood)
+	    	{
+	    		firstGood = Integer.parseInt(((String) lastElement).split("/")[1]);
 	    	}
 	        lastElement=itr.next();
 	    }
 	    Integer lastValidWilks = Integer.parseInt(((String)lastGood).split("/")[1]);
+	    Integer firstValidWilks = firstGood;
 	    double currBest = 1000000000;
-	    
+	    boolean isMin = false;
 		for(String keyComb : keys)
 		{
 			String[] keySet = keyComb.split("/");
@@ -175,12 +184,20 @@ public class UserStats
 			{
 				String wilksIter = keySet[1];
 			    Integer wilksCurrent = Integer.parseInt(wilksIter);
-			    if(Math.abs(wilksCurrent - x) < currBest)
+			    if(wilksCurrent > x)
+			    {
+			    	isMin = true;
+			    }
+			    if(Math.abs(wilksCurrent - x) < currBest && wilksCurrent < x)
 			    {
 			    	ret = String.valueOf(wilksCurrent);
 			    	currBest = Math.abs(wilksCurrent - x);
 			    }
 			}
+		}
+		if(ret.equals("") && isMin)
+		{
+			return Integer.toString(firstValidWilks);
 		}
 		if(ret.equals(""))
 		{
@@ -194,7 +211,7 @@ public class UserStats
 		String ret = "";
 		double currBest = 1000000000;
 		for(String iter : keys)
-		{
+		{ 
 			String[] set = iter.split("/");
 			if(iter.contains("+"))
 			{
@@ -209,7 +226,7 @@ public class UserStats
 				}
 			}
 			Integer currMass = Integer.parseInt(set[0]);
-			if(Math.abs(x - currMass) < currBest)
+			if(Math.abs(x - currMass) < currBest && x > currMass)
 			{
 				currBest = Math.abs(x - currMass);
 				ret = String.valueOf(currMass);
