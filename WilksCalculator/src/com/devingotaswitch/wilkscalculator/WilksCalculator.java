@@ -218,6 +218,12 @@ public class WilksCalculator extends Activity {
 					df.format(stats.wilksScore)
 					+ "\nClassification: " + stats.getClassifs());
 		}
+		output.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				wilksPopup();
+			}
+		});
 			setButtonsOnClick(male, female, pounds, kgs, weight, deadlift_view, squat_view, bench_view);
 	}
 
@@ -254,6 +260,7 @@ public class WilksCalculator extends Activity {
 			imm.hideSoftInputFromWindow(bench_view.getWindowToken(), 0);
 		TextView output = (TextView)findViewById(R.id.output_view);
 		output.setText(" ");
+		output.setOnClickListener(null);
 		setButtonsOnClick(male, female, pounds, kgs, weight, deadlift_view, squat_view, bench_view);
 	}
 

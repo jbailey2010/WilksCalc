@@ -149,7 +149,6 @@ public class UserStats
 		Set<String> keys = classifications.keySet();
 		String massKey = this.closestUnderWeight(mass, keys);
 		String liftedKey = this.closestUnderMass(lifted, keys, massKey);
-		System.out.println(liftedKey);
 		return classifications.get(massKey + "/" + liftedKey);
 	}
 	
@@ -331,7 +330,6 @@ public class UserStats
 	 */
 	public void updateBench(double newBench)
 	{
-		isPR(bench, newBench, "bench");
 		bench = newBench;
 	}
 	
@@ -340,7 +338,6 @@ public class UserStats
 	 */
 	public void updateSquat(double newSquat)
 	{
-		isPR(squat, newSquat, "squat");
 		squat = newSquat;
 	}
 	
@@ -349,7 +346,6 @@ public class UserStats
 	 */
 	public void updateDeadlift(double newDead)
 	{
-		isPR(deadlift, newDead, "deadlift");
 		deadlift = newDead;
 	}
 	
@@ -360,17 +356,6 @@ public class UserStats
 	{
 		total = deadlift + squat + bench;
 		wilksScore = calculateWilks();
-	}
-	
-	/**
-	 * If the newly input data is better than the old, it congratulates you
-	 */
-	public void isPR(double old, double newLift, String key)
-	{
-		if(newLift > old && old > 0)
-		{
-			Toast.makeText(cont, "Congrats on the " + key + " PR!", Toast.LENGTH_LONG).show();
-		}
 	}
 	
 	/**
