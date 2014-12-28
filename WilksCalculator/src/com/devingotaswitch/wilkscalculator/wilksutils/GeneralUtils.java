@@ -31,7 +31,7 @@ public class GeneralUtils
 	 */
 	public static double lbToKg(double pound)
 	{
-		return pound / 2.2;
+		return pound / 2.20462;
 	}
 	
 	/**
@@ -39,6 +39,6 @@ public class GeneralUtils
 	 */
 	public static double kgToLb(double kg)
 	{
-		return kg * 2.2;
+		return kg * 2.20462;
 	}
 }

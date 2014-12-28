@@ -9,6 +9,7 @@ import java.text.DecimalFormat;
 
 
 
+
 import com.devingotaswitch.wilkscalculator.wilksutils.GeneralUtils;
 import com.devingotaswitch.wilkscalculator.wilksutils.UserStats;
 import com.devspark.sidenavigation.ISideNavigationCallback;
@@ -207,16 +208,29 @@ public class WilksCalculator extends Activity {
 		DecimalFormat df = new DecimalFormat("#.###");
 		if(!stats.isKG)
 		{
-			output.setText("Big 3 Total: " + df.format(stats.total)
-					+ "\nWilks Score: " + df.format(stats.wilksScore)
-					+ "\nClassification: " + stats.getClassifs());
+			if(!stats.getClassifs().contains("Un-trained")){
+				output.setText("Big 3 Total: " + df.format(stats.total)
+						+ "\nWilks Score: " + df.format(stats.wilksScore)
+						+ "\nClassification: " + stats.getClassifs());
+			}
+			else{
+				output.setText("Big 3 Total: " + df.format(stats.total)
+						+ "\nWilks Score: " + df.format(stats.wilksScore));
+			}
 		}
 		else
 		{
-			output.setText("Big 3 Total: " + 
-					df.format(GeneralUtils.lbToKg(stats.total))+ "\nWilks Score: " +  
-					df.format(stats.wilksScore)
-					+ "\nClassification: " + stats.getClassifs());
+			if(!stats.getClassifs().contains("Un-trained")){
+				output.setText("Big 3 Total: " + 
+						df.format(GeneralUtils.lbToKg(stats.total))+ "\nWilks Score: " +  
+						df.format(stats.wilksScore)
+						+ "\nClassification: " + stats.getClassifs());
+			}
+			else{
+				output.setText("Big 3 Total: " + 
+						df.format(GeneralUtils.lbToKg(stats.total))+ "\nWilks Score: " +  
+						df.format(stats.wilksScore));
+			}
 		}
 		output.setOnClickListener(new OnClickListener(){
 			@Override
