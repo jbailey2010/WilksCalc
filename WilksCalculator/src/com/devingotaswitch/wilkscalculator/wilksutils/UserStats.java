@@ -7,6 +7,7 @@ import java.util.Set;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -149,6 +150,7 @@ public class UserStats
 		Set<String> keys = classifications.keySet();
 		String massKey = this.closestUnderWeight(mass, keys);
 		String liftedKey = this.closestUnderMass(lifted, keys, massKey);
+		Log.i("Wilks Calculator", massKey + "/" + liftedKey);
 		return classifications.get(massKey + "/" + liftedKey);
 	}
 	

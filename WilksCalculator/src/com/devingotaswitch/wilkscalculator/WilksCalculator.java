@@ -220,7 +220,7 @@ public class WilksCalculator extends Activity {
 		}
 		else
 		{
-			if(!stats.getClassifs().contains("Un-trained")){
+			if(stats.getClassifs() != null && !stats.getClassifs().contains("Un-trained")){
 				output.setText("Big 3 Total: " + 
 						df.format(GeneralUtils.lbToKg(stats.total))+ "\nWilks Score: " +  
 						df.format(stats.wilksScore)
